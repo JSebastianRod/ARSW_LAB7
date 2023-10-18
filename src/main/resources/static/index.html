@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Blueprints</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script src="js/apimock.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/apiclient.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Sans+MS&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<style>
+
+     #authorNameButton {
+        background-color: red;
+        color: white;
+    }
+
+
+    #authorNameButton:hover {
+        background-color: white;
+        color: black;
+    }
+    
+    body {
+        padding: 30px;
+        font-family: "Comic Sans MS", sans-serif;
+    }
+
+    .smaller-input {
+        width: 150px;
+        font-size: 12px;
+    }
+
+    #name {
+        font-size: 20px;
+    }
+
+    #tContainer {
+        display: flex;
+        flex-direction: row;
+    }
+
+    #blueprintTable {
+        width: 50%;
+        font-size: 12px;
+        margin-left: 0;
+    }
+
+    
+
+
+</style>
+
+<body onload="app.pointerEvents()">
+    <div>
+        <h1 class="text-left">Blueprints</h1>
+        <div class="form-inline">
+            <label id="name1" for="inputName" class="h4">Author name:</label>
+            <input id="inputName" type="text" class="form-control smaller-input" />
+            <button id="authorNameButton" class="btn btn-primary" onclick="app.getNameAuthorBlueprints()">
+                GetBlueprints
+            </button>
+        </div>
+
+        <br />
+        <h1 id="name"></h1>
+    </div>
+
+    <p id="selectAutor" class="lead"></p>
+    <div id="tContainer">
+        <table id="blueprintTable" class="table">
+            <thead>
+                <tr>
+                    <th><span class="h5">Blueprint name</span></th>
+                    <th><span class="h5">Points</span></th>
+                    <th><span class="h5">Open</span></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        
+        <div class="cContainer">
+            <p id="canvas" class="lead"></p>
+            <canvas id="canva" width="550" height="450" style="border: 1px solid black" class="panel"></canvas>
+            
+        </div>
+    </div>
+
+    <div class="my-3">
+        <p>
+            Total user points:
+            <label id="points" class="h4"></label>
+        </p>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+
+</html>

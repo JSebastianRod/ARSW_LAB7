@@ -1,0 +1,16 @@
+1. Condiciones de carrera:
+    Se puede presentar cuando accedemos al HashMap donde estamos
+    almacenando los planos cuando una peticion necesita consultarlos
+    o añadir uno nuevo.
+
+2. Regiones Criticas:
+    Debido a que el persitence alamcena las blueprints y no es thread-safe
+    entonces se genera una condicion carrera si dos peticiones quieren
+    agregar un plano con el mismo nombre y autor.
+
+SOLUCION:
+
+Para garantizar el funcionamiento thread-safe, vamos a cambiar el tipo de
+HashMap a ConcurrentHashMap ya que esta clase garantiza un funcionamiento
+thread-safe. Para la condicion carrera, vamos a cambiar el metodo put()
+por el metodo putIfAbsent() que evita la condicion carrera.
