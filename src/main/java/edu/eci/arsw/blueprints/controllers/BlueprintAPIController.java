@@ -13,9 +13,11 @@ import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,16 +53,16 @@ public class BlueprintAPIController {
     }
 
     @RequestMapping(value = "/blueprints/{author}", method = RequestMethod.GET)
-    public ResponseEntity<?> handlerGetBlueprintsByAuthor(@PathVariable String author){
+    public ResponseEntity<?> handlerGetBlueprintsByAuthor(@PathVariable String author) {
         Set<Blueprint> blueprints = null;
         try {
             blueprints = bps.getBlueprintsByAuthor(author);
-            if(blueprints.isEmpty()){
+            if (blueprints.isEmpty()) {
                 return new ResponseEntity<>("404 Not Found", HttpStatus.NOT_FOUND);
-            }else{
+            } else {
                 return new ResponseEntity<>(blueprints, HttpStatus.ACCEPTED);
             }
-            
+
         } catch (Exception e) {
             Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>("Error " + e.getMessage(), HttpStatus.NOT_FOUND);
@@ -68,13 +70,14 @@ public class BlueprintAPIController {
     }
 
     @RequestMapping(value = "/blueprints/{author}/{bpname}", method = RequestMethod.GET)
-    public ResponseEntity<?> handlerGetBlueprintsByAuthorAndBp(@PathVariable String author, @PathVariable String bpname){
+    public ResponseEntity<?> handlerGetBlueprintsByAuthorAndBp(@PathVariable String author,
+            @PathVariable String bpname) {
         Blueprint blueprints = null;
         try {
             blueprints = bps.getBlueprint(author, bpname);
-            if(blueprints == null){
+            if (blueprints == null) {
                 return new ResponseEntity<>("404 Not Found", HttpStatus.NOT_FOUND);
-            }else{
+            } else {
                 return new ResponseEntity<>(blueprints, HttpStatus.ACCEPTED);
             }
         } catch (Exception e) {
@@ -84,7 +87,7 @@ public class BlueprintAPIController {
     }
 
     @RequestMapping(value = "/blueprints/add", method = RequestMethod.POST)
-    public ResponseEntity<?> handlerAddBlueprint(@RequestBody Blueprint bp){
+    public ResponseEntity<?> handlerAddBlueprint(@RequestBody Blueprint bp) {
         try {
             bps.addNewBlueprint(bp);
             return new ResponseEntity<>("Agregado correctamente", HttpStatus.ACCEPTED);
@@ -93,15 +96,40 @@ public class BlueprintAPIController {
             return new ResponseEntity<>("Error " + e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
         }
     }
-    
+
     @PutMapping(value = "/blueprints/{author}/{bpname}")
-    public ResponseEntity<?> handlerUpdateBlueprint(@PathVariable String author, @PathVariable String bpname, @RequestBody List<Point> Points){
+    public ResponseEntity<?> handlerUpdateBlueprint(@PathVariable String author, @PathVariable String bpname,
+            @RequestBody List<Point> Points) {
         try {
             bps.updateBlueprint(author, bpname, Points);
-            return new ResponseEntity<>("Actualizado correctamente",HttpStatus.ACCEPTED);
+            return new ResponseEntity<>("Actualizado correctamente", HttpStatus.ACCEPTED);
         } catch (Exception e) {
             Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, e);
             return new ResponseEntity<>("404 Blueprint Not Found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @RequestMapping(value = "/blueprints/", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> postBlueprint(@RequestBody Blueprint blueprint) {
+        try {
+            bps.addNewBlueprint(blueprint);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (BlueprintPersistenceException ex) {
+            // Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE,
+            // null, ex);
+            return new ResponseEntity<>("No se ha logrado registrar", HttpStatus.FORBIDDEN);
+        }
+
+    }
+
+    @RequestMapping(value = "/blueprints/{author}/{bpname}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> handlerDeleteBlueprintsByAuthorAndBp(@PathVariable String author,@PathVariable String bpname) {
+        try {
+            bps.deleteBlueprint(author, bpname);
+            return new ResponseEntity<>("200 deleted", HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, e);
+            return new ResponseEntity<>("404 Not Found", HttpStatus.NOT_FOUND);
         }
     }
 }

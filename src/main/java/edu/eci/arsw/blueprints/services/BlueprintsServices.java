@@ -29,15 +29,12 @@ public class BlueprintsServices {
     @Qualifier("InMemoryBlueprintPersistence")
     BlueprintsPersistence bpp;
 
-    @Autowired
-    FilterServices fs;
     
     public void addNewBlueprint(Blueprint bp) throws BlueprintPersistenceException{
         bpp.saveBlueprint(bp);
     }
     
     public Set<Blueprint> getAllBlueprints() throws BlueprintNotFoundException, BlueprintPersistenceException{
-        fs.filterBlueprints(bpp.getAllBlueprints());
         return bpp.getAllBlueprints();
     }
     
@@ -49,7 +46,6 @@ public class BlueprintsServices {
      * @throws BlueprintNotFoundException if there is no such blueprint
      */
     public Blueprint getBlueprint(String author,String name) throws BlueprintNotFoundException{
-        fs.filterBlueprint(bpp.getBlueprint(author, name));
         return bpp.getBlueprint(author, name);
     }
     
@@ -66,6 +62,10 @@ public class BlueprintsServices {
     public void updateBlueprint(String author, String name, List<Point> Points) throws BlueprintNotFoundException{
         Blueprint bp = getBlueprint(author, name);
         bp.setPoints(Points);
+    }
+
+    public void deleteBlueprint(String author, String name) throws BlueprintNotFoundException{
+        bpp.deleteBlueprint(author, name);
     }
 
 

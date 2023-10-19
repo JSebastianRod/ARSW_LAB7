@@ -89,11 +89,22 @@
         
         <div class="cContainer">
             <p id="canvas" class="lead"></p>
+            <div>
+                <button id="crearBlueprint" type='button' class='btn btn-primary' onclick="app.saveBlueprint()"> Create new blueprint</button>
+            </div>
             <canvas id="canva" width="550" height="450" style="border: 1px solid black" class="panel"></canvas>
             
         </div>
     </div>
-
+    <div id = "saveUpdate">
+        <br>
+        <button  type='button' class='btn btn-success' onclick="app.addPoints()">
+          Save/Update
+        </button>
+        <button type='button'  class='btn btn-danger' onclick="app.deleteBlueprint()">
+          Delete
+        </button>
+    </div>
     <div class="my-3">
         <p>
             Total user points:
